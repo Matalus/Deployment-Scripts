@@ -283,7 +283,7 @@ ForEach ($Row in $FullTemplate) {
         $ValidationError++
     }
 
-    if($Row.Reading_Type -notin $Reading_Types.Result.Description){ #Checks for invalid Reading Types
+    if($Row.Reading_Type -notin $Reading_Types.Result.Description){ #Checks for invalid reading Types
         Write-Host -ForegroundColor Yellow "Row $($LeadRowCount) : Reading Type: [$($Row.Reading_Type)] is not a valid reading type"
         $ValidationError++
     }
