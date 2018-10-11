@@ -1,0 +1,13 @@
+{
+    "WebHost": "http://bl-p37-web-01:90",
+    "Username": "mhamende",
+    "Password": "Baselayer2!",
+    "LoginMethod": "jsonproxy.ashx?service=LoginUser",
+    "ExecMethod": "jsonproxy.ashx?service=ExecuteScript",
+    "JSONGetLocInfo": {
+        "ScriptName": "bl_location_info",
+        "Parameters": "{\"regionID\":54,\"locationID\":38,\"partitionID\":12743,\"deviceID\":null,\"sensorID\":null}",
+        "UID": null,
+        "Ticket": null
+    }
+}

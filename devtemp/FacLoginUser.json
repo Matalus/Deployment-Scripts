@@ -1,0 +1,22 @@
+{
+    "LoginName": "bladmin",
+    "DomainLoginName": null,
+    "Password": "bladmin",
+    "NewPassword": null,
+    "IdentityServerAccessToken": null,
+    "LoginClaimType": null,
+    "LoginClaimValue": null,
+    "LoginProvider": null,
+    "Environment": "Production",
+    "DeployType": "IODC_Central",
+    "ApplicationVersion": "3.7.0.237",
+    "AppID": "ca45379e-e857-4606-a956-bdf35f02cb81",
+    "Locale": null,
+    "MacAddresses": "80:00:0B:9D:03:F0",
+    "ComputerName": "STARLORD",
+    "UID": null,
+    "IPAddress": null,
+    "UserAgent": "Microsoft Windows NT 6.2.9200.0",
+    "AppCD": null,
+    "EntryServiceHandler": null
+}
