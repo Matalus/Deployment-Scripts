@@ -13,7 +13,7 @@ If (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
 #Define Root Path
 $RunDir = split-path -parent $MyInvocation.MyCommand.Definition
 
-#Generic Logging function
+#Generic Logging function --
 Function Log($message, $color) {
     if ($color) {
         Write-Host -ForegroundColor $color "$(Get-Date -Format u) | $message"
