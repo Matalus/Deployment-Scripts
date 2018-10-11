@@ -262,33 +262,33 @@ ForEach ($Row in $FullTemplate) {
         }
     }
 
-    if($Row.Device_Type_Short.Length -gt 15){
+    if($Row.Device_Type_Short.Length -gt 15){ #Checks Device_Type_Short length
         Write-Host -ForegroundColor Yellow "Row $($LeadRowCount) : Sensor_Type_Short: [$($Row.Device_Type_Short)]($($Row.Device_Type_Short.Length)) : exceeds maximum chars(15)"
         $ValidationError++
     }
 
-    if($Row.Sensor_Type_Short.Length -gt 15){
+    if($Row.Sensor_Type_Short.Length -gt 15){ #Checks Sensor_Type_Short length
         Write-Host -ForegroundColor Yellow "Row $($LeadRowCount) : Device_Type_Short: [$($Row.Sensor_Type_Short)]($($Row.Sensor_Type_Short.Length)) : exceeds maximum chars(15)"
         $ValidationError++
     }
 
 
-    if($Row.Measurement_Type -notin $Measurement_Types.Result.Description){
+    if($Row.Measurement_Type -notin $Measurement_Types.Result.Description){ #Checks for invalid measurement types
         Write-Host -ForegroundColor Yellow "Row $($LeadRowCount) : Measurement Type: [$($Row.Measurement_Type)] : does not exist in this instance of RunSmart"
         $ValidationError++
     }
 
-    if($Row.Monitor_Type -notin $Monitor_Types.Result.Description){
+    if($Row.Monitor_Type -notin $Monitor_Types.Result.Description){ #Checks for invalid monitor types
         Write-Host -ForegroundColor Yellow "Row $($LeadRowCount) : Monitor Type: [$($Row.Monitor_Type)] is not a valid monitor type"
         $ValidationError++
     }
 
-    if($Row.Reading_Type -notin $Reading_Types.Result.Description){
+    if($Row.Reading_Type -notin $Reading_Types.Result.Description){ #Checks for invalid reading Types
         Write-Host -ForegroundColor Yellow "Row $($LeadRowCount) : Reading Type: [$($Row.Reading_Type)] is not a valid reading type"
         $ValidationError++
     }
 
-    if($Row.Convert -ne "NULL" -and $row.Convert -notin $Conversion_Formulas.Result.Conversion_Formula_CD){
+    if($Row.Convert -ne "NULL" -and $row.Convert -notin $Conversion_Formulas.Result.Conversion_Formula_CD){ #Checks for invalid conversion codes
         Write-Host -ForegroundColor Yellow "Row $($LeadRowCount) : Conversion Formula CD: [$($Row.Convert)] is not a valid conversion formula cd"
         $ValidationError++
     }
