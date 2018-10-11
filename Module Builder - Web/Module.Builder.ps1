@@ -23,7 +23,7 @@ Function Log($message, $color) {
     }
 }
 
-#Set Current Root Dir
+#Set Current Root Dir --
 Set-Location $RunDir
 
 #Load function library from modules folder
