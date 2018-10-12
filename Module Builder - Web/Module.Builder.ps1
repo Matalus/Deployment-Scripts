@@ -78,7 +78,7 @@ Get-ChildItem $RunDir\Temp -Filter "*.csv" | Remove-Item -Force -ErrorAction Sil
 
 #Set location of template file
 [array]$importList = Get-ChildItem $RunDir\Templates -Filter "*.xls*"
-Clear-Host
+#Clear-Host
 Write-Host -ForegroundColor Gray "Module Builder -:- Created by Matt Hamende 2018" 
 Write-Host -ForegroundColor Gray "##########################################################"
 Write-Host -ForegroundColor Green "Connected to Instance: $($Config.Description)"
@@ -254,6 +254,10 @@ $ValidationError = 0
 $LeadRowCount = 1 #Starts at 1 due to header row
 ForEach ($Row in $FullTemplate) {
     $LeadRowCount++
+    Try{
+        Write-InlineProgress -Activity "Validating Items: $LeadRowCount / $($FullTemplate.Count)" -PercentComplete (($LeadRowCount / $FullTemplate.Count) * 100)
+        }Catch{$_ | Out-Null}                
+    
     $LeadResult = LeadTrail $Row 
     if ($LeadResult.ContainsLeading -eq $true) {
         $ValidationError++
@@ -303,6 +307,10 @@ else {
     Log "Template is Valid" "Green"
 }
 
+Try{
+    Write-InlineProgress -Stop
+}Catch{$_ | Out-Null}
+
 $Script:AltRootID = $Null
 
 #Loop through items in template
@@ -320,6 +328,9 @@ ForEach ($Row in $Template) {
      
     #Where-Object query on All_Device_Types to match Device_Type_CD
     $Count++
+    Try{
+        Write-InlineProgress -Activity "Processing Items: $Count / $($Template.Count)" -PercentComplete (($Count / $Template.Count) * 100)
+    }Catch{$_ | Out-Null}                
     ""
     if (-not ($Row.Partition_ID -match "\d+")) {
         GetLastAppLog -config $Config -user $User; Write-Error "Error: You must enter a valid Partition_ID in the template"
@@ -1004,6 +1015,11 @@ if($Row.Parent_Path.Length -ge 1){
     "----------------------------------------------------------------------"
     $Row.Update = 0
 }
+
+Try{
+    Write-InlineProgress -Stop
+}Catch{$_ | Out-Null}                
+
 
 Log "Updating Template..." "Yellow"
 

@@ -55,12 +55,21 @@ Function Prereqs ($config) {
                 Catch {$_ | Out-Null}
             }
             else {
-                Write-Host -ForegroundColor Yellow "Module: $Module - Installing..."
-                Install-Module $Module -Force -Repository PSGallery -Confirm:$false
-                Try {
-                    Import-Module $Module
+                $testexist = Find-Module $Module -ErrorAction SilentlyContinue
+                if($testexist -ne $null){
+                    Write-Host -ForegroundColor Yellow "Module: $Module - Installing..."
+                    Install-Module $Module -Force -Repository PSGallery -Confirm:$false
+                    Try {
+                        Import-Module $Module
+                    }Catch {$_ | Out-Null}
+                }else{
+                    $localpath = "..\Modules\$Module\$Module.psm1"
+                    if(test-Path $localpath){
+                        Write-Host -ForegroundColor Yellow "Module: $Module - Installing from local repository..."
+                        Import-Module $localpath -DisableNameChecking
+                    }
                 }
-                Catch {$_ | Out-Null}
+                
             }
         }        
     }
