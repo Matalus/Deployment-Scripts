@@ -128,6 +128,15 @@ ForEach ($xl in $importList) {
     $_.Update -eq 1
 }
 
+if($Template.count -lt 1){
+    $updateall = ("Yes","No") | Out-GridView -PassThru -Title "There are no sensors set to update, would you like to update all?"
+    if($updateall -eq "Yes"){
+        $Template = $FullTemplate | ForEach-Object { $_.Update = 1}
+    }
+
+}
+
+
 #Login to Visualizer
 Log "Logging into Data Management Service..."
 $User = LoginUser -config $Config
@@ -255,8 +264,16 @@ $LeadRowCount = 1 #Starts at 1 due to header row
 ForEach ($Row in $FullTemplate) {
     $LeadRowCount++
     Try{
-        Write-InlineProgress -Activity "Validating Items: $LeadRowCount / $($FullTemplate.Count)" -PercentComplete (($LeadRowCount / $FullTemplate.Count) * 100)
-        }Catch{$_ | Out-Null}                
+        $progParams = @{
+            Activity = "Validating Items: $LeadRowCount / $($FullTemplate.Count)" 
+            PercentComplete = (($LeadRowCount / $FullTemplate.Count) * 100)   
+        }
+        if($Host.Name -like "*Code*"){
+            Write-InlineProgress @progParams
+        }else{
+            Write-Progress @progParams
+        }
+    }Catch{$_ | Out-Null}                
     
     $LeadResult = LeadTrail $Row 
     if ($LeadResult.ContainsLeading -eq $true) {
@@ -335,7 +352,15 @@ ForEach ($Row in $Template) {
     #Where-Object query on All_Device_Types to match Device_Type_CD
     $Count++
     Try{
-        Write-InlineProgress -Activity "Processing Items: $Count / $($Template.Count)" -PercentComplete (($Count / $Template.Count) * 100)
+        $progParams = @{
+            Activity = "Processing Items: $Count / $($Template.Count)" 
+            PercentComplete = (($Count / $Template.Count) * 100)
+        }
+        if($Host.Name -like "*Code*"){
+        Write-InlineProgress @progParams
+        }else{
+            Write-Progress @progParams
+        }
     }Catch{$_ | Out-Null}                
     ""
     if (-not ($Row.Partition_ID -match "\d+")) {
@@ -1063,3 +1088,5 @@ $XL.Dispose()
 
 
 "" ; Log "Done!" "Green"
+
+Read-Host -Prompt "Press Enter to Quit"
