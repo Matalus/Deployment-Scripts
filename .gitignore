@@ -1,0 +1,10 @@
+*.xlsx
+*.csv
+/*.json
+/*.ps1
+!Repo
+devtools
+devtemp/
+SensorTypes - SQL/*
+Module Builder - Web/*
+MeterDeploy - SQL/*
