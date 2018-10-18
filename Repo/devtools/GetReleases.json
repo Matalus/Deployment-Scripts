@@ -1,0 +1,17 @@
+{
+    "Application_GUID":  "ca45379e-e857-4606-a956-bdf35f02cb81",
+    "Ticket":  "42e572ff-65e8-485f-a53e-2a45296c406e",
+    "LoginID":  0,
+    "Environment":  "Production",
+    "DeployType":  "IODC_Central",
+    "ApplicationVersion":  null,
+    "AppID":  "ca45379e-e857-4606-a956-bdf35f02cb81",
+    "Locale":  null,
+    "MacAddresses":  null,
+    "ComputerName":  null,
+    "UID":  null,
+    "IPAddress":  null,
+    "UserAgent":  null,
+    "AppCD":  null,
+    "EntryServiceHandler":  null
+}

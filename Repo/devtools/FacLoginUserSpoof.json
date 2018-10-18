@@ -1,7 +1,7 @@
 {
     "LoginName":  "bladmin",
     "DomainLoginName":  null,
-    "Password":  "bladmin",
+    "Password":  null,
     "NewPassword":  null,
     "IdentityServerAccessToken":  null,
     "LoginClaimType":  null,
