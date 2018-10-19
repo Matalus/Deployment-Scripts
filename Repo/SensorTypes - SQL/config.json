@@ -1,6 +1,12 @@
-{
-    "ServerInstance":  "bl-hyperv-db",
-    "Database":  "BL-Patch-37",
-    "Username":  null,
-    "Password":  null
-}
+[
+    "",
+    "1 : Checking Path: content.Username",
+    "",
+    "2 : Checking Path: content.Password",
+    {
+        "ServerInstance":  "bl-hyperv-db",
+        "Database":  "BL-Patch-37",
+        "Username":  null,
+        "Password":  null
+    }
+]

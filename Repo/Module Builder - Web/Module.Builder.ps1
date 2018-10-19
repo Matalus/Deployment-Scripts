@@ -36,9 +36,9 @@ Log "Loading Configuration..."
 $Config = (Get-Content "..\config.json") -join "`n" | ConvertFrom-Json
 $Config = SetInstance -config $Config
 
-$instance_confirm = ("yes","no") | Out-GridView -PassThru -Title "Is this the correct instance? $($Config.Instance) : $($Config.Description)" #Read-Host -Prompt "Is this the correct instance? y/n"
+$instance_confirm = ("yes", "no") | Out-GridView -PassThru -Title "Is this the correct instance? $($Config.Instance) : $($Config.Description)" #Read-Host -Prompt "Is this the correct instance? y/n"
 
-if($instance_confirm -like "*n*"){
+if ($instance_confirm -like "*n*") {
     Log "Select the correct instance" "Magenta"
 
 
@@ -48,7 +48,7 @@ if($instance_confirm -like "*n*"){
         "WebHost",
         "Environment",
         "Username",
-        @{N="Password";E={"****"}}
+        @{N = "Password"; E = {"****"}}
     )
     $select_instance = $Config.Instances | Select-Object $instance_params | Out-GridView -PassThru -Title "Select Instance"
     <# -- Legacy Host menu selection
@@ -238,10 +238,10 @@ $Reading_Types = GetSelectMethod @params
 #Retrieving Conversio Formulas Array
 Log "Getting Conversion Formulas"
 $params = @{
-    config = $Config
-    user = $User
+    config  = $Config
+    user    = $User
     service = $Config.MiscMethod
-    method = "SELECT_1122"
+    method  = "SELECT_1122"
 }
 
 $Conversion_Formulas = GetSelectMethod @params
@@ -262,33 +262,39 @@ ForEach ($Row in $FullTemplate) {
         }
     }
 
-    if($Row.Device_Type_Short.Length -gt 15){
+    if ($Row.Device_Type_Short.Length -gt 15) {
+        #Checks Device_Type_Short length
         Write-Host -ForegroundColor Yellow "Row $($LeadRowCount) : Sensor_Type_Short: [$($Row.Device_Type_Short)]($($Row.Device_Type_Short.Length)) : exceeds maximum chars(15)"
         $ValidationError++
     }
 
-    if($Row.Sensor_Type_Short.Length -gt 15){
+    if ($Row.Sensor_Type_Short.Length -gt 15) {
+        #Checks Sensor_Type_Short length
         Write-Host -ForegroundColor Yellow "Row $($LeadRowCount) : Device_Type_Short: [$($Row.Sensor_Type_Short)]($($Row.Sensor_Type_Short.Length)) : exceeds maximum chars(15)"
         $ValidationError++
     }
 
 
-    if($Row.Measurement_Type -notin $Measurement_Types.Result.Description){
+    if ($Row.Measurement_Type -notin $Measurement_Types.Result.Description) {
+        #Checks for invalid measurement types
         Write-Host -ForegroundColor Yellow "Row $($LeadRowCount) : Measurement Type: [$($Row.Measurement_Type)] : does not exist in this instance of RunSmart"
         $ValidationError++
     }
 
-    if($Row.Monitor_Type -notin $Monitor_Types.Result.Description){
+    if ($Row.Monitor_Type -notin $Monitor_Types.Result.Description) {
+        #Checks for invalid monitor types
         Write-Host -ForegroundColor Yellow "Row $($LeadRowCount) : Monitor Type: [$($Row.Monitor_Type)] is not a valid monitor type"
         $ValidationError++
     }
 
-    if($Row.Reading_Type -notin $Reading_Types.Result.Description){
+    if ($Row.Reading_Type -notin $Reading_Types.Result.Description) {
+        #Checks for invalid reading Types
         Write-Host -ForegroundColor Yellow "Row $($LeadRowCount) : Reading Type: [$($Row.Reading_Type)] is not a valid reading type"
         $ValidationError++
     }
 
-    if($Row.Convert -ne "NULL" -and $row.Convert -notin $Conversion_Formulas.Result.Conversion_Formula_CD){
+    if ($Row.Convert -ne "NULL" -and $row.Convert -notin $Conversion_Formulas.Result.Conversion_Formula_CD) {
+        #Checks for invalid conversion codes
         Write-Host -ForegroundColor Yellow "Row $($LeadRowCount) : Conversion Formula CD: [$($Row.Convert)] is not a valid conversion formula cd"
         $ValidationError++
     }
@@ -310,7 +316,7 @@ $Count = 0
 ForEach ($Row in $Template) {
     
     #Set Alternate Partition ID for loop variable already in memory
-    if($Script:AltRootID -ne $Null){
+    if ($Script:AltRootID -ne $Null) {
         $Row.Partition_ID = $Script:AltRootID
         $Row.Sensor_Type_CD = $Null
         $Row.Device_Type_CD = $Null
@@ -347,27 +353,28 @@ ForEach ($Row in $Template) {
         if ($Partition.Result -eq $Null) {
             Log "Unable to locate root partition ID: $($Row.Partition_ID)" "Yellow"
             #$SearchConfirm = Read-Host -Prompt "Search for Partition in current instance? y/n"
-            [array]$SearchConfirm = ("Yes","No") | Out-GridView -PassThru -Title "Search for Partition in current instance? y/n"
-            if($SearchConfirm -like "*y*" -and $SearchConfirm.Count -lt 2){
+            [array]$SearchConfirm = ("Yes", "No") | Out-GridView -PassThru -Title "Search for Partition in current instance? y/n"
+            if ($SearchConfirm -like "*y*" -and $SearchConfirm.Count -lt 2) {
                 #$PartitionString = Read-Host -Prompt "Enter Partition Search String"
 
-                if([appdomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.FullName -like "*VisualBasic*"} -eq $null){
+                if ([appdomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.FullName -like "*VisualBasic*"} -eq $null) {
                     [void][System.Reflection.Assembly]::LoadWithPartialName("Microsoft.VisualBasic") #Load VB Assemblies
                 }
 
-                if($Last_SearchString){
-                    $PartitionString = [Microsoft.VisualBasic.Interaction]::InputBox("Enter Partition Search String","Partition Search",$Last_SearchString)
+                if ($Last_SearchString) {
+                    $PartitionString = [Microsoft.VisualBasic.Interaction]::InputBox("Enter Partition Search String", "Partition Search", $Last_SearchString)
                     $Last_SearchString = $PartitionString
-                } else{
-                    $PartitionString = [Microsoft.VisualBasic.Interaction]::InputBox("Enter Partition Search String","Partition Search")
+                }
+                else {
+                    $PartitionString = [Microsoft.VisualBasic.Interaction]::InputBox("Enter Partition Search String", "Partition Search")
                     $Last_SearchString = $PartitionString
                 }
                 $PartitionResult = $null
                 $retry = 0
-                While($PartitionResult.Result.Count -lt 1){
+                While ($PartitionResult.Result.Count -lt 1) {
                     
-                    if($retry -ge 1){
-                        $PartitionString = [Microsoft.VisualBasic.Interaction]::InputBox("Enter Partition Search String","Partition Search: No Results Please Try a different search term",$Last_SearchString)
+                    if ($retry -ge 1) {
+                        $PartitionString = [Microsoft.VisualBasic.Interaction]::InputBox("Enter Partition Search String", "Partition Search: No Results Please Try a different search term", $Last_SearchString)
                         $Last_SearchString = $PartitionString
                     }
                     $PartitionResult = PartitionSearch -config $Config -user $User -searchstring $PartitionString
@@ -383,8 +390,8 @@ ForEach ($Row in $Template) {
                 }
                 #>
                 ""
-                While($PartitionResult.Result.Count -gt 0){
-                    if($PartitionResult.Result.Count -gt 0){
+                While ($PartitionResult.Result.Count -gt 0) {
+                    if ($PartitionResult.Result.Count -gt 0) {
                         $PartitionResult.Result = $PartitionResult.Result | Out-GridView -PassThru -Title "Select a Partition to set Root Partition"
                         #Retrieves info for selected Partition
                         $GetPartitionParams = @{
@@ -395,10 +402,11 @@ ForEach ($Row in $Template) {
                     
                         $Partition = $Null
                         $Partition = GetPartition @GetPartitionParams
-                    }else{
+                    }
+                    else {
                         Write-Error "Partition Search Returned no results"
                     }
-                    if($PartitionResult.Result.Count -gt 1){
+                    if ($PartitionResult.Result.Count -gt 1) {
                         Write-Host -ForegroundColor "You Must Select Only 1 Partition"
                     }
                 }   
@@ -437,25 +445,26 @@ ForEach ($Row in $Template) {
                     $_.Update -eq 1
                 } #Recreate update array
                 
-            }else{
+            }
+            else {
                 GetLastAppLog -config $Config -user $User; Write-Error "Error:GetPartition: Method: ResultCode: $($Partition.ResultCode) ResultMessage: $($Partition.ResultMessage)"
             }
         }
     }
-if($Row.Parent_Path.Length -ge 1){
-    #Attempt to locate child partitions
-    [array]$TempPartitions = $Row.Parent_Path.Split("\")
-    [array]$TempTypes = $Row.Partition_Types.Split("\")
+    if ($Row.Parent_Path.Length -ge 1) {
+        #Attempt to locate child partitions
+        [array]$TempPartitions = $Row.Parent_Path.Split("\")
+        [array]$TempTypes = $Row.Partition_Types.Split("\")
 
-    $LastRow = $Partition.Result
-    For ($i = 0; $i -lt $TempPartitions.Length; $i++) {
-        $ChildParams = @{
-            user      = $User
-            config    = $Config
-            partition = $LastRow
-        }
-        $children = GetPartitionChildren @ChildParams
-        <##
+        $LastRow = $Partition.Result
+        For ($i = 0; $i -lt $TempPartitions.Length; $i++) {
+            $ChildParams = @{
+                user      = $User
+                config    = $Config
+                partition = $LastRow
+            }
+            $children = GetPartitionChildren @ChildParams
+            <##
         if([version]$Config.Release.Version_Number -lt [version]"3.7.0.0"){
             $children = (GetSelectMethod -config $Config -user $User -service $Config.PartitionMethod -method "SELECT_1200")
             $trimChildren = $children.Result | Where-Object{
@@ -467,68 +476,69 @@ if($Row.Parent_Path.Length -ge 1){
             $children = GetPartitionChildren @ChildParams
         }
         #>
-        if ($children.Resultcode -eq 0 -and
-            $children.ResultMessage -eq $null) {
-            Try {    
-                $childType = $All_Partition_Types.Result.PartitionType | Where-Object { $_.Description -eq $TempTypes[$i] }
-            }
-            Catch {Write-Error "Unable to Match Partition Type: $($TempTypes[$i])"}
-            $childMatch = $Null
-            $childMatch = $children.Result | Where-Object {
-                $_.Partition_Name -eq $TempPartitions[$i] -and
-                $_.Partition_Type_CD -eq $childType.Partition_Type_CD
-            }
-
-            if ($childMatch) {
-                Log "--> Found: Child Partition: $($childMatch.Partition_Name) : $($childMatch.Partition_ID)"
-                $LastRow = $childMatch
-
-            }
-            else {
-                Log "--> Unable to Locate Child Partition $($TempPartitions[$i]) ($($childtype.Description)) - Inserting" "Cyan"
-                
-                $partitionData = [pscustomobject]@{
-                    Location_ID          = $LastRow.Location_ID 
-                    Partition_ID         = $Null
-                    Parent_Partition_ID  = $LastRow.Partition_ID
-                    Partition_Type_CD    = $childType.Partition_Type_CD
-                    Partition_Name       = $TempPartitions[$i]
-                    Partition_Short_Name = $TempPartitions[$i]
+            if ($children.Resultcode -eq 0 -and
+                $children.ResultMessage -eq $null) {
+                Try {    
+                    $childType = $All_Partition_Types.Result.PartitionType | Where-Object { $_.Description -eq $TempTypes[$i] }
                 }
-                
-                $PartitionSetParams = @{
-                    user   = $User
-                    config = $Config
-                    data   = $partitionData
+                Catch {Write-Error "Unable to Match Partition Type: $($TempTypes[$i])"}
+                $childMatch = $Null
+                $childMatch = $children.Result | Where-Object {
+                    $_.Partition_Name -eq $TempPartitions[$i] -and
+                    $_.Partition_Type_CD -eq $childType.Partition_Type_CD
                 }
-                $SetPartition = SetPartition @PartitionSetParams
-                if ($SetPartition.ResultCode -eq 0 -and
-                    $SetPartition.ResultMessage -eq $Null) {
-                    Log "--> Success! - Inserted Partition: $($SetPartition.Result.Partition_ID)" "Green"
-                    $LastRow = $SetPartition.Result
+
+                if ($childMatch) {
+                    Log "--> Found: Child Partition: $($childMatch.Partition_Name) : $($childMatch.Partition_ID)"
+                    $LastRow = $childMatch
+
                 }
                 else {
-                    Write-Error "Error: SetPartition ResultCode: $($SetPartition.ResultCode) ResultMessage: $($SetPartition.ResultMessage)"
+                    Log "--> Unable to Locate Child Partition $($TempPartitions[$i]) ($($childtype.Description)) - Inserting" "Cyan"
+                
+                    $partitionData = [pscustomobject]@{
+                        Location_ID          = $LastRow.Location_ID 
+                        Partition_ID         = $Null
+                        Parent_Partition_ID  = $LastRow.Partition_ID
+                        Partition_Type_CD    = $childType.Partition_Type_CD
+                        Partition_Name       = $TempPartitions[$i]
+                        Partition_Short_Name = $TempPartitions[$i]
+                    }
+                
+                    $PartitionSetParams = @{
+                        user   = $User
+                        config = $Config
+                        data   = $partitionData
+                    }
+                    $SetPartition = SetPartition @PartitionSetParams
+                    if ($SetPartition.ResultCode -eq 0 -and
+                        $SetPartition.ResultMessage -eq $Null) {
+                        Log "--> Success! - Inserted Partition: $($SetPartition.Result.Partition_ID)" "Green"
+                        $LastRow = $SetPartition.Result
+                    }
+                    else {
+                        Write-Error "Error: SetPartition ResultCode: $($SetPartition.ResultCode) ResultMessage: $($SetPartition.ResultMessage)"
+                    }
                 }
             }
-        }
-        else {
-            GetLastAppLog -config $Config -user $User;
-            Write-Error "Error:GetPartitionChildren: ResultCode: $($child.ResultCode) ResultMessage: $($child.ResultMessage)"
-        }
+            else {
+                GetLastAppLog -config $Config -user $User;
+                Write-Error "Error:GetPartitionChildren: ResultCode: $($child.ResultCode) ResultMessage: $($child.ResultMessage)"
+            }
     
             
+        }
     }
-}
     $DeviceType = $Null
     [array]$DeviceType = $All_Device_Types.Result | Where-Object {
         $_.Device_Type_Name -eq $Row.Device_Type
     }
 
-    if($Row.Parent_Path.Length -lt 1 -and ($Row.Partition_Types -eq "NULL" -or $Row.Partition_Types -eq $Null -or $Row.Partition_Types.Length -lt 1)){
-        if($Partition.Result -ne $Null){
+    if ($Row.Parent_Path.Length -lt 1 -and ($Row.Partition_Types -eq "NULL" -or $Row.Partition_Types -eq $Null -or $Row.Partition_Types.Length -lt 1)) {
+        if ($Partition.Result -ne $Null) {
             $LastRow = $Partition.Result
-        }else{
+        }
+        else {
             $LastRow = $Partition
         }
     }
@@ -735,8 +745,9 @@ if($Row.Parent_Path.Length -ge 1){
             if ([int]$SensorType.Sensor_Type_CD -lt 100000 -and $Config.Instance -eq "BL-FA") {
                 Log "This is a Factory Sensor Type : do you want to update this"
                 #$updateST = Read-Host -Prompt "Update? y / n"
-                $updateST = ("Yes","No") | Out-GridView -PassThru -Title "$($SensorType.Sensor_Type_CD) : $($SensorType.Sensor_Name): is a Factory Sensor Type : do you want to update this?"
-            }else{
+                $updateST = ("Yes", "No") | Out-GridView -PassThru -Title "$($SensorType.Sensor_Type_CD) : $($SensorType.Sensor_Name): is a Factory Sensor Type : do you want to update this?"
+            }
+            else {
                 $updateST = 'y'
             }
         

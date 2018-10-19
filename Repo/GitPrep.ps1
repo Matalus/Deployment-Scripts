@@ -5,12 +5,19 @@ $ErrorActionPreference = "stop"
 $RunDir = split-path -parent $MyInvocation.MyCommand.Definition
 $SourceDir = $RunDir
 $RepoDir = "$RunDir\Repo"
-
+$filters = @("Username","Password","LoginName","WebHost")
 
 Function Log($message) {
     "$(Get-Date -Format u) | $message"
 }
 
+Log "Compiling functions..."
+Try{
+Remove-Module JSON_Sanitize -ErrorAction SilentlyContinue
+}Catch{$_ | Out-Null}
+
+Import-Module "$RunDir\JSON_Sanitize.psm1" -ErrorAction SilentlyContinue
+ 
 Log "Getting Current Repo Files..."
 $RepoFiles = Get-ChildItem $RepoDir -Recurse | Where-Object{
     $_.PsIsContainer -eq $False
@@ -44,31 +51,12 @@ $ConfigFiles = Get-ChildItem $RepoDir -Recurse | Where-Object {
 }
 
 ForEach($file in $ConfigFiles | Where-Object{$_.FullName -notlike "*.vs*"}){
-    Log "Sanitizing $($file.FullName)"
+    Log "Sanitizing File: $($file.FullName)"
     $content = (Get-Content $file.FullName) -join "`n" | ConvertFrom-Json
 
-    if($content.Username){
-        $content.Username = $null
-    }
+    $ObjProps = Get-Properties -Object $content -PathName '$content'
 
-    if($content.Password){
-        $content.Password = $null
-    }
-
-    
-
-    if($content.Instances){
-        $content.Instances = @()
-        $test_instance = [pscustomobject]@{
-            InstanceName = "Test-Instance"
-            Description = "Description of Environment"
-            WebHost = "URL of web service"
-            Environment = "Environment Name and Version"
-            Username = $null
-            Password = $null
-        }
-        $content.Instances += $test_instance
-    }
+    $content = Sanitize-Object -object $ObjProps -propsarray $filters -varname 'content' -fullobject $content 
 
     $content | ConvertTo-Json | Set-Content $file.FullName -Force
 }
