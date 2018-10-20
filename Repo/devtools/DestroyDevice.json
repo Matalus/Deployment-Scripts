@@ -1,0 +1,23 @@
+{
+  "Task_ID": "acc2fd4b-45fa-4ea7-b42e-7e8fd0a22f89",
+  "Process_CD": 1,
+  "Parameter_XML": "﻿\u003c?xml version=\"1.0\" encoding=\"utf-8\"?\u003e\r\n\u003cEntityDestructionParameters xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\u003e\r\n  \u003cEntityTypeToDestroy\u003eDevice\u003c/EntityTypeToDestroy\u003e\r\n  \u003cEntityID\u003e2967f8a4-3701-e811-80cc-b82a72db462d\u003c/EntityID\u003e\r\n  \u003cRequestedBy\u003e100069\u003c/RequestedBy\u003e\r\n\u003c/EntityDestructionParameters\u003e",
+  "Start_Date": "2018-01-24T18:57:46.34121Z",
+  "Status_CD": 1,
+  "Last_Updated_by": null,
+  "Last_Updated_Document_ID": null,
+  "Ticket": null,
+  "LoginID": 0,
+  "Environment": null,
+  "DeployType": "IODC_Central",
+  "ApplicationVersion": null,
+  "AppID": null,
+  "Locale": null,
+  "MacAddresses": null,
+  "ComputerName": null,
+  "UID": null,
+  "IPAddress": null,
+  "UserAgent": null,
+  "AppCD": null,
+  "EntryServiceHandler": null
+}

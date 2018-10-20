@@ -1,30 +1,34 @@
 {
-    "LeafPartitionTypes": [12,4,5],
-    "ServerInstance": "sq176486-015.dc.gs.com",
-    "Database": "IODC_Central2",
-    "LeafDeviceType": 100001,
-    "NodeDeviceType": 100002,
-    "LeafSensorTypes": [
-        {
-            "TypeName": "Power Capacity",
-            "TypeCD": 100009,
-            "VarName": null,
-            "PlaceHolder": null,
-            "URI": "eval:8.6"
-        },
-        {
-            "TypeName": "Power Consumed",
-            "TypeCD": 100008,
-            "VarName": "$Partition.Partition_ID",
-            "PlaceHolder": "PARTITIONPLACEHOLDER",
-            "URI": "eval:[urn:io:partition:PARTITIONPLACEHOLDER & urn:io:sensortype:7506] |> sum"
-        },
-        {
-            "TypeName": "Temperature",
-            "TypeCD": 100007,
-            "VarName": "$Partition.Module_ID",
-            "PlaceHolder": "MODULEIDPLACEHOLDER",
-            "URI": "eval:[urn:io:partition:MODULEIDPLACEHOLDER & urn:io:sensortype:2] |> mean"
-        }
-    ]
+  "LeafPartitionTypes": [
+    12,
+    4,
+    5
+  ],
+  "ServerInstance": null,
+  "Database": "IODC_Central2",
+  "LeafDeviceType": 100001,
+  "NodeDeviceType": 100002,
+  "LeafSensorTypes": [
+    {
+      "TypeName": "Power Capacity",
+      "TypeCD": 100009,
+      "VarName": null,
+      "PlaceHolder": null,
+      "URI": "eval:8.6"
+    },
+    {
+      "TypeName": "Power Consumed",
+      "TypeCD": 100008,
+      "VarName": "$Partition.Partition_ID",
+      "PlaceHolder": "PARTITIONPLACEHOLDER",
+    "URI": "eval:[urn:io:partition:PARTITIONPLACEHOLDER \u0026 urn:io:sensortype:7506] |\u003e sum"
+    },
+    {
+      "TypeName": "Temperature",
+      "TypeCD": 100007,
+      "VarName": "$Partition.Module_ID",
+      "PlaceHolder": "MODULEIDPLACEHOLDER",
+    "URI": "eval:[urn:io:partition:MODULEIDPLACEHOLDER \u0026 urn:io:sensortype:2] |\u003e mean"
+    }
+  ]
 }

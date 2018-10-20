@@ -1,14 +1,11 @@
-*.xlsx
-*.csv
-/*.json
-/*.ps1
-!Repo
-devtools
-devtemp/
-*/*
-SensorTypes - SQL/*
-Module Builder - Web/*
-MeterDeploy - SQL/*.*
-.vs/*.*
-Modules/Functions/*.*
-.vscode/*.*
+.vs/
+.vscode/
+MeterDeploy - SQL/
+Module Builder - Web/
+Modules/Functions/
+SensorTypes - SQL/
+SensorTypes - Web/
+devtools/
+devtools/*.*
+!Repo/
+

@@ -1,5 +1,4 @@
-﻿#function to parse psobject and map out object tree and paths
-function Get-Properties($Object, $MaxLevels="5", $PathName, $Level=0){
+﻿function Get-Properties($Object, $MaxLevels="5", $PathName = "`$JSON", $Level=0){
     if ($Level -eq 0) { 
         $oldErrorPreference = $ErrorActionPreference
         $ErrorActionPreference = "SilentlyContinue"
@@ -24,17 +23,15 @@ function Get-Properties($Object, $MaxLevels="5", $PathName, $Level=0){
     $props
 }
 
-Export-ModuleMember Get-Properties
-
-#function that applies filters to psobject paths and nulls values in filters array
-Function Sanitize-Object($object,$propsarray,$varname,$fullobject){
+Function Sanitize-Object($object,$propsarray){
     $count = 0
-    New-Variable -Name $varname -Value $fullobject
     ForEach($propfilter in $propsarray){
        $props = $object | Where-Object{ $_ -like "*$propfilter" }
        ForEach($path in $props){
             [string]$pathstring = $path.Replace('$','')
             $count++
+            ""
+            "$count : Cheking Path: $pathstring"
             $splitpath = $path.Split(".")
             $propname = $splitpath[$($splitpath.length -1)]
             $rootpath = $path.Replace(".$propname","")
@@ -44,46 +41,32 @@ Function Sanitize-Object($object,$propsarray,$varname,$fullobject){
                 ForEach($item in $invoke){                
                     $invokepath = "$rootpath[$invokecount].$propname"
                     if($item){
-                        #Write-Host -ForegroundColor Yellow "   + enum $invokecount : value is not null: $item"
+                        Write-Host -ForegroundColor Yellow "   + enum $invokecount : value is not null: $item"
                         $nullcmd = $invokepath + ' = $null'
                         Invoke-Expression -command $nullcmd
                         if((Invoke-Expression -command $Invokepath) -eq $null){
-                            #Write-Host -ForegroundColor White "      + value is null; value= $(Invoke-Expression -command $Invokepath)"
+                            Write-Host -ForegroundColor White "      + value is null; value= $(Invoke-Expression -command $Invokepath)"
                         }else{
-                            #Write-Host -ForegroundColor Red "      + value is not null; value = $(Invoke-Expression -command $Invokepath)"
+                            Write-Host -ForegroundColor Red "      + value is not null; value = $(Invoke-Expression -command $Invokepath)"
                         }
                     }else{
-                        #write-host -ForegroundColor Cyan "   + enum $invokecount : value is already null"
+                        write-host -ForegroundColor Cyan "   + enum $invokecount : value is already null"
                     }
                     $invokecount++  
                 }
             }else{
-                #Write-Host -ForegroundColor White "   +   Path: $pathstring is null"
+                Write-Host -ForegroundColor White "   +   Path: $pathstring is null"
             }
         }    
     }
-    (Get-Variable -Name $varname).Value
 }
 
-Export-ModuleMember Sanitize-Object
+$JSON = (Get-Content 'C:\Users\MattH\OneDrive - BASELAYER\Deployment Scripts\config.json') -join "`n" | ConvertFrom-Json
 
-# Formats JSON in a nicer format than the built-in ConvertTo-Json does.
-function Format-Json([Parameter(Mandatory, ValueFromPipeline)][String] $json) {
-    $indent = 0;
-    ($json -Split '\n' |
-      % {
-        if ($_ -match '[\}\]]') {
-          # This line contains  ] or }, decrement the indentation level
-          $indent--
-        }
-        $line = (' ' * $indent * 2) + $_.TrimStart().Replace(':  ', ': ')
-        if ($_ -match '[\{\[]') {
-          # This line contains [ or {, increment the indentation level
-          $indent++
-        }
-        $line
-    }) -Join "`n"
-  }
+$filters = @("Username","Password","LoginName","WebHost")
 
-  Export-ModuleMember Format-Json
+$FullObject = Get-Properties -Object $JSON
+
+Sanitize-Object -object $FullObject -propsarray $filters
+
 

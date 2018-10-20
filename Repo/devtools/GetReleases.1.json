@@ -1,0 +1,16 @@
+{
+  "Ticket": "36b47bcd-9a15-480e-8ac3-9b0a939c6426",
+  "LoginID": 15862,
+  "Environment": "Production",
+  "DeployType": "IODC_Central",
+  "ApplicationVersion": null,
+  "AppID": "ca45379e-e857-4606-a956-bdf35f02cb81",
+  "Locale": null,
+  "MacAddresses": null,
+  "ComputerName": null,
+  "UID": null,
+  "IPAddress": null,
+  "UserAgent": null,
+  "AppCD": null,
+  "EntryServiceHandler": null
+}

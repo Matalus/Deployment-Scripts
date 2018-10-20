@@ -1,0 +1,21 @@
+{
+  "Task_ID": "c8ec9813-129e-4818-8575-af09a1fa01c1",
+  "Progress_Date": "2018-01-24T21:29:05.3108042Z",
+  "Status_CD": 1,
+  "Completion_Percentage": 0.0,
+  "Progress_Message": null,
+  "Ticket": "9c99999c-c356-4fad-a0f9-70ed28edb0b5",
+  "LoginID": 0,
+  "Environment": "3.7 Patch",
+  "DeployType": "IODC_Central",
+  "ApplicationVersion": null,
+  "AppID": "ca45379e-e857-4606-a956-bdf35f02cb81",
+  "Locale": null,
+  "MacAddresses": null,
+  "ComputerName": null,
+  "UID": null,
+  "IPAddress": null,
+  "UserAgent": null,
+  "AppCD": null,
+  "EntryServiceHandler": null
+}
