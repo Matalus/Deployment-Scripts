@@ -35,8 +35,6 @@ Function Sanitize-Object($object,$propsarray,$varname,$fullobject){
        ForEach($path in $props){
             [string]$pathstring = $path.Replace('$','')
             $count++
-            ""
-            "$count : Checking Path: $pathstring"
             $splitpath = $path.Split(".")
             $propname = $splitpath[$($splitpath.length -1)]
             $rootpath = $path.Replace(".$propname","")
@@ -46,21 +44,21 @@ Function Sanitize-Object($object,$propsarray,$varname,$fullobject){
                 ForEach($item in $invoke){                
                     $invokepath = "$rootpath[$invokecount].$propname"
                     if($item){
-                        Write-Host -ForegroundColor Yellow "   + enum $invokecount : value is not null: $item"
+                        #Write-Host -ForegroundColor Yellow "   + enum $invokecount : value is not null: $item"
                         $nullcmd = $invokepath + ' = $null'
                         Invoke-Expression -command $nullcmd
                         if((Invoke-Expression -command $Invokepath) -eq $null){
-                            Write-Host -ForegroundColor White "      + value is null; value= $(Invoke-Expression -command $Invokepath)"
+                            #Write-Host -ForegroundColor White "      + value is null; value= $(Invoke-Expression -command $Invokepath)"
                         }else{
-                            Write-Host -ForegroundColor Red "      + value is not null; value = $(Invoke-Expression -command $Invokepath)"
+                            #Write-Host -ForegroundColor Red "      + value is not null; value = $(Invoke-Expression -command $Invokepath)"
                         }
                     }else{
-                        write-host -ForegroundColor Cyan "   + enum $invokecount : value is already null"
+                        #write-host -ForegroundColor Cyan "   + enum $invokecount : value is already null"
                     }
                     $invokecount++  
                 }
             }else{
-                Write-Host -ForegroundColor White "   +   Path: $pathstring is null"
+                #Write-Host -ForegroundColor White "   +   Path: $pathstring is null"
             }
         }    
     }

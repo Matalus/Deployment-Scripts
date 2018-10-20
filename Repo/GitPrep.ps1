@@ -5,11 +5,17 @@ $ErrorActionPreference = "stop"
 $RunDir = split-path -parent $MyInvocation.MyCommand.Definition
 $SourceDir = $RunDir
 $RepoDir = "$RunDir\Repo"
-$filters = @("Username","Password","LoginName","WebHost")
+$filters = @("Username","Password","LoginName","WebHost","ServerInstance")
 
 Function Log($message) {
     "$(Get-Date -Format u) | $message"
 }
+
+if(!(Test-Path $RepoDir)){
+    Log "Creating Repo Directory..."
+    New-Item -Path $RepoDir -ItemType Directory -ErrorAction SilentlyContinue
+}
+
 
 Log "Compiling functions..."
 Try{
@@ -56,9 +62,9 @@ ForEach($file in $ConfigFiles | Where-Object{$_.FullName -notlike "*.vs*"}){
 
     $ObjProps = Get-Properties -Object $content -PathName '$content'
 
-    $content = Sanitize-Object -object $ObjProps -propsarray $filters -varname 'content' -fullobject $content 
+    $ouput = Sanitize-Object -object $ObjProps -propsarray $filters -varname 'content' -fullobject $content 
 
-    $content | ConvertTo-Json | Set-Content $file.FullName -Force
+    $output | ConvertTo-Json | Set-Content $file.FullName -Force
 }
 
 Log "GitPrep Complete"
