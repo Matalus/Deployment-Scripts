@@ -1,21 +1,8 @@
-#Created by Matt Hamende BASELAYER TECHNOLOGY 2017
 #Library of functions to drive Deployment Tools
 
 Function Logo() {
     Write-Host -ForegroundColor Blue @"
-    
-        ╣@╖,
-        ╢╢╢╣╣▓m,
-         ╙Ñ╬╣╢╢╢╣[        ╠╬╣╣╬Ñ╖                 ,@╬╣╬@                           ß@
-        ▓W╖ ,▒╢╬╣[        ╟╢╣ ]╢╣ ]▓╣ ]╬╣ ]╬╬╣╬▓╖ ╟╢╣╖,"  Ñ▓╣╣▓▓╬╣▓╖  ╬╬╬▓@ ]╬▓╣╬ ╫╣╢▓╣
-        ╢╢╢╣╬╣@▒'         ╟╢╣╬╣╣" ]╢╣ ]╢╣ ]╢╣ ]╢╣  ╙╨╫╣╣┐ ╢╣ ]╢╣ ]╢╣ ,g@╬╣╣ ]╢╣    ╫╣∩
-        "╨╬╣╢╢╢╢▓╬m╖      ╟╢╣ ╫╣@  ╫╣@╬╢╣ ]╢╣ ]╢╣ ║╬@@╣╣" ╢╣ ]╢╣ ]╢╣ ╟╢╣@╢╣ ]╢╣    ╫╢╬╬`
-            `╙╫╬╢╢╢╢╣╣     `   ``   ````   `²  ``   ``    ``  ``  `²   ````  ``     ```
-                 "╨╬╢╣
-        
-                                                                                                                                                                    
-    $((Get-Date).year) RunSmart Software. LLC All Rights Reserved
-    
+                                                                                                                                                         
     $(Split-Path -Leaf $MyInvocation.ScriptName)
 "@
 }
