@@ -5,6 +5,10 @@
 !Repo
 devtools
 devtemp/
+*/*
 SensorTypes - SQL/*
 Module Builder - Web/*
-MeterDeploy - SQL/*
+MeterDeploy - SQL/*.*
+.vs/*.*
+Modules/Functions/*.*
+.vscode/*.*
