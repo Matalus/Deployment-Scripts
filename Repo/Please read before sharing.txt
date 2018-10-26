@@ -1,0 +1,3 @@
+The files in the directory contain sensitive information
+
+Run: GitPrep.ps1 to sanitize config files and make a copy of the root directory contents in the "Repo" folder

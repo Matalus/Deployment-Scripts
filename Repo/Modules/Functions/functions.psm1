@@ -43,7 +43,15 @@ Function Prereqs ($config) {
             }
             else {
                 Write-Host -ForegroundColor Yellow "Module: $Module - Installing..."
-                Install-Module $Module -Force -Repository PSGallery -Confirm:$false
+                $repo_error = 0
+                Try{
+                    $repo_exist = Find-Module -Name $Module
+                }catch{$repo_error++}
+                if($repo_error -eq 0){
+                    Install-Module $Module -Force -Repository PSGallery -Confirm:$false
+                }else{
+                    Write-Host -ForegroundColor Yellow "WARNING: Module $Module can't be found on repository this could cause unexpected errors"
+                }
                 Try {
                     Import-Module $Module
                 }

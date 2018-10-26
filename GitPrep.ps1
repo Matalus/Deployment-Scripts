@@ -68,3 +68,10 @@ ForEach($file in $ConfigFiles | Where-Object{$_.FullName -notlike "*.vs*"}){
 }
 
 Log "GitPrep Complete"
+
+Try{
+    $notepath = "$RepoDir\If you can see this file it' safe to upload.txt"
+    New-Item -ItemType File -Path $notepath -Force
+    "Only the files in the repo directory are safe to upload, files in the root may contain sensitive information" | Set-Content -Path $notepath -Force
+    Invoke-Item $RepoDir
+}catch{$_ | Out-Null}

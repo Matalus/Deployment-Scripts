@@ -1,5 +1,5 @@
 #Module Builder - Reads Smart Template format to ease sensor deployment
-#Created by Matt Hamende BASELAYER TECHNOLOGY 2018
+#Created by Matt Hamende 2018
 
 $ErrorActionPreference = "stop"
 
